@@ -1,9 +1,8 @@
 const actor = document.querySelector(".actor");
 const zombie = document.querySelector(".zombie");
+const score = document.querySelector(".score");
 const CRASH_VALUE = 100;
 const ACTOR_JUMP_IFRAME = 100;
-
-console.log("Actor element: ", actor);
 
 const jump = () => {
   actor.classList.add("jump");
@@ -13,11 +12,16 @@ const jump = () => {
   }, 1000);
 };
 
+let score_value = 0;
+
 const loop = setInterval(() => {
   const zombiePosition = zombie.offsetLeft;
   const actorBottomOffsetPosition = +window
     .getComputedStyle(actor)
     .bottom.replace("px", "");
+
+  score_value += 1;
+  score.innerHTML = score_value;
 
   if (
     zombiePosition <= CRASH_VALUE &&
@@ -32,6 +36,6 @@ const loop = setInterval(() => {
 
     clearInterval(loop);
   }
-}, 10);
+}, 100);
 
 document.addEventListener("keydown", jump);
