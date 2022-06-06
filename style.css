@@ -17,7 +17,7 @@
 .zombie {
   position: absolute;
   bottom: 0;
-  right: -80px;
+  right: 0;
   animation: zombie-animation 2s infinite linear;
 }
 
@@ -60,6 +60,6 @@
   }
 
   to {
-    right: 100%;
+    right: 90%;
   }
 }
