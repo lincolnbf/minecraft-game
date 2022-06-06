@@ -2,16 +2,20 @@ const UIElements = {
   actor: document.querySelector(".actor"),
   zombie: document.querySelector(".zombie"),
   phantom: document.querySelector(".phantom"),
+  dragon: document.querySelector(".dragon"),
 };
 
 const LogicElements = {
   score: document.querySelector(".score"),
+  lifes: document.querySelector(".lifes"),
 };
 
 const ZOMBIE_CRASH_VALUE = 100;
 const PHANTOM_CRASH_VALUE = 100;
 const ACTOR_JUMP_IFRAME = 100;
+const MOVEMENT_SPEED = 100;
 
+let lifes = 3;
 let score_value = 0;
 let gameIsRunning = true;
 
@@ -27,41 +31,37 @@ const handleW = () => {
   const actorBottomOffsetPosition = +window
     .getComputedStyle(UIElements.actor)
     .bottom.replace("px", "");
-  UIElements.actor.style.bottom = actorBottomOffsetPosition + 20 + "px";
+  if (actorBottomOffsetPosition >= 300) return;
+  UIElements.actor.style.bottom =
+    actorBottomOffsetPosition + MOVEMENT_SPEED + "px";
 };
 
 const handleS = () => {
   const actorBottomOffsetPosition = +window
     .getComputedStyle(UIElements.actor)
     .bottom.replace("px", "");
-  UIElements.actor.style.bottom = actorBottomOffsetPosition - 20 + "px";
+  if (actorBottomOffsetPosition <= 0) return;
+  UIElements.actor.style.bottom =
+    actorBottomOffsetPosition - MOVEMENT_SPEED + "px";
 };
 
 const handleA = () => {
   const leftPosition = +window
     .getComputedStyle(UIElements.actor)
     .left.replace("px", "");
-  UIElements.actor.style.left = leftPosition - 20 + "px";
+  UIElements.actor.style.left = leftPosition - MOVEMENT_SPEED + "px";
 };
 
 const handleD = () => {
   const rightPosition = +window
     .getComputedStyle(UIElements.actor)
     .left.replace("px", "");
-  UIElements.actor.style.left = rightPosition + 20 + "px";
-};
-
-const setRandomTickForPhantomSpeed = () => {
-  if (score_value % 10 === 0) {
-    const TICK = Math.floor(Math.random() * (3 - 1)) + 1;
-    UIElements.phantom.style.animation = `enemy-movement ${TICK}s infinite linear`;
-  }
+  UIElements.actor.style.left = rightPosition + MOVEMENT_SPEED + "px";
 };
 
 const updateScore = () => {
   score_value += 1;
   LogicElements.score.innerHTML = score_value;
-  setRandomTickForPhantomSpeed();
 };
 
 const checkColision = () => {
@@ -76,6 +76,8 @@ const clearAnimations = () => {
   // phantom.style.animation = "none";
   UIElements.phantom.style.display = "none";
   // phantom.style.left = ZOMBIE_CRASH_VALUE + "px";
+
+  UIElements.dragon.style.display = "none";
 
   UIElements.actor.style.animation = "none";
   UIElements.actor.style.left = "0px";
@@ -98,11 +100,21 @@ const run = setInterval(() => {
     zombiePosition <= ZOMBIE_CRASH_VALUE &&
     actorBottomOffsetPosition <= ACTOR_JUMP_IFRAME
   ) {
-    die();
-    clearAnimations();
-    clearInterval(run);
+    if (lifes <= 0) {
+      die();
+      clearAnimations();
+      clearInterval(run);
+    } else {
+      setTimeout(() => {
+        UIElements.zombie.style.right = 0;
+        lifes >= 0 ? lifes-- : lifes;
+        if (lifes === 0) {
+          LogicElements.lifes.innerHTML = "VOCE MORREU!";
+        } else LogicElements.lifes.innerHTML = lifes;
+      }, 200);
+    }
   }
-}, 100);
+}, 400);
 
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space" && gameIsRunning) {
@@ -114,8 +126,8 @@ document.addEventListener("keydown", (e) => {
   } else if (e.code === "KeyS" && gameIsRunning) {
     handleS();
   } else if (e.code === "KeyA" && gameIsRunning) {
-    handleA();
+    // handleA();
   } else if (e.code === "KeyD" && gameIsRunning) {
-    handleD();
+    // handleD();
   }
 });

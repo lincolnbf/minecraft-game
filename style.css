@@ -18,13 +18,18 @@ span {
   background-image: url("/assets/bg.jpg");
 }
 
+.lifebar img {
+  height: 40px;
+  width: 40px;
+}
+
 .zombie {
   height: 100px;
   width: 100px;
   position: absolute;
   bottom: 0;
   right: 0;
-  animation: enemy-movement 4s infinite linear;
+  animation: enemy-movement 1s infinite linear;
 }
 
 .actor {
@@ -36,12 +41,21 @@ span {
 }
 
 .phantom {
-  height: 120px;
-  width: 120px;
+  height: 100px;
+  width: 100px;
   position: absolute;
-  top: 150px;
+  bottom: 300px;
   right: 0px;
   animation: enemy-movement 2s infinite linear;
+}
+
+.dragon {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  bottom: 200px;
+  right: 0px;
+  animation: enemy-movement 1s infinite linear;
 }
 
 .jump {
